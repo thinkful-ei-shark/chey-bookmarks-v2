@@ -57,7 +57,7 @@ const generateNewBookmarkView = function () {
     <label class='item' for="link-title">Title:</label><br>
     <input id="link-title" type="text" name="title" autofocus='on'>
     <label class='item' for="link-url">Link:</label><br>
-    <input id="link-url" type="text" name="url" >
+    <input id="link-url" type="url" name="url" >
     <label class='item' for="link-description">Description:</label>
     <textarea id="link-description" name="desc"></textarea>
     <h3>Rating:</h3>
