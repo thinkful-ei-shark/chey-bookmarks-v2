@@ -64,3 +64,7 @@ button#new {
     box-shadow: 5px 8px 5px 1px #456462;
     color: #456462;
 }
+
+.bookmark-list-item {
+    font-weight: bolder;
+}
