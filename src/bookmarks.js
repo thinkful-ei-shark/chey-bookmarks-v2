@@ -135,7 +135,7 @@ const handleNewBookmarkSubmit = function () {
       .catch((error) => {
         console.log("something diff")
         store.setError(error.message); //grader doesnt like "Updating store and then rendering each time is expected and some event handlers do not do this."
-        // renderError();
+        renderError();
       });
 
   });
