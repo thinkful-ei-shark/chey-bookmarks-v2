@@ -105,7 +105,7 @@ const handleCloseError = function () {
 
 /******************* EVENT HANDLING FUNCTIONS  ************************/
 
-const handleNewBookmarkView = function () {
+const handleNewBookmarkView = function () { //grader doesnt like "Updating the DOM should only occur within the render functions as specified in the requirements."
   // New bookmark page button
   $('main').on('click', '#new', event => {
     event.preventDefault();
@@ -134,7 +134,7 @@ const handleNewBookmarkSubmit = function () {
       })
       .catch((error) => {
         console.log("something diff")
-        store.setError(error.message);
+        store.setError(error.message); //grader doesnt like "Updating store and then rendering each time is expected and some event handlers do not do this."
         // renderError();
       });
 
@@ -261,7 +261,6 @@ const eventListeners = function () {
   handleExpandedView();
   handleCloseExpandedView();
   handleDeletedBookmarkClick();
-  handleEditBookmarkItemSubmit();
   handleFilterView(); 
   handleCloseError();
 };
