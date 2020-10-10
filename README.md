@@ -1,4 +1,10 @@
-<h1> Live link: https://thinkful-ei-shark.github.io/chey-bookmarks-v2/ </h1>
+<h1>Project Overview</h1>
+
+<p>Using everything you've learned over the Fundamentals section of the course, you will build the frontend for an API-powered Bookmarks application that lets the user store and rate their custom web bookmarks.</p>
+
+<br>
+
+<h2> Live link: https://thinkful-ei-shark.github.io/chey-bookmarks-v2/</h2>
 <br>
 <h3> User Story: </h3>
 <br>
