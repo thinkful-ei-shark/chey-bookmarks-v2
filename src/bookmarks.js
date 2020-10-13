@@ -7,9 +7,9 @@ import store from './store';
 const generateDefaultView = function () {
   return `<form class='item'>
     <h2>New Bookmark </h2>
-    <button type="submit" value="Submit" id='new'>New Bookmark</button>
+    <button type="submit" tabindex="1" value="Submit" id='new'>New Bookmark</button>
     <label for='filter'>Filter by rating:</label>
-    <select id="filter" name='filter'>
+    <select tabindex="1" id="filter" name='filter'>
       <option value="">Select</option>
       <option value="5">5 Star</option>
       <option value="4">4 Star</option>
@@ -39,12 +39,12 @@ const generateExpandedBookmarkElementView = function (bookmark) {
   return `<li class="bookmark-list-item item" data-item-id="${bookmark.id}">
   
   <span><span>Title:</span><br>${bookmark.title}</span>
-  <p><span>Visit Link:</span><br><a href="${bookmark.url}" target="_blank">${bookmark.url}</a></p>  
+  <p><span>Visit Link:</span><br><a tabindex="1" href="${bookmark.url}" target="_blank">${bookmark.url}</a></p>  
   <p><span>Rating:</span><br>${rating}</p>
   <p>${bookmark.desc}</p>
   <div>
-      <button class='item' type="submit" id='condense'>Close</button>
-      <button class='item' type="submit" id='delete'>Delete</button>
+      <button class='item' tabindex="1" type="submit" id='condense'>Close</button>
+      <button class='item' tabindex="1" type="submit" id='delete'>Delete</button>
   </div>
   </li>`;
 };
@@ -55,25 +55,25 @@ const generateNewBookmarkView = function () {
   return `<h2>New Bookmark</h2>
   <form class='new-bookmark'>
     <label class='item' for="link-title">Title:</label><br>
-    <input id="link-title" type="text" name="title" autofocus='on'>
+    <input id="link-title" tabindex="1" type="text" name="title" autofocus='on'>
     <label class='item' for="link-url">Link:</label><br>
-    <input id="link-url" type="url" name="url" >
+    <input id="link-url" tabindex="1" type="url" name="url" >
     <label class='item' for="link-description">Description:</label>
-    <textarea id="link-description" name="desc"></textarea>
+    <textarea tabindex="1" id="link-description" name="desc"></textarea>
     <h3>Rating:</h3>
       
-      <input name="rating" type="radio" value="1">
+      <input name="rating" tabindex="1" type="radio" value="1">
        <label for="1">★</label>
-      <input name="rating" type="radio" value="2">
+      <input name="rating" tabindex="1" type="radio" value="2">
        <label for="2">★★</label>
-      <input name="rating" type="radio" value="3">
+      <input name="rating" tabindex="1" type="radio" value="3">
        <label for="3">★★★</label>
-      <input name="rating" type="radio" value="4">
+      <input name="rating" tabindex="1" type="radio" value="4">
        <label for="4">★★★★</label>
-      <input name="rating" type="radio" value="5">
+      <input name="rating" tabindex="1" type="radio" value="5">
        <label for="5">★★★★★</label>
-    <button class='item' type="submit" id='cancel'>Cancel</button>
-    <button class='item' type="submit" id='create'>Create</button>
+    <button class='item' tabindex="1" type="submit" id='cancel'>Cancel</button>
+    <button class='item' tabindex="1" type="submit" id='create'>Create</button>
   </form>`;
 };
 
@@ -99,7 +99,7 @@ const renderError = function () {
 const handleCloseError = function () {
   $('.error-container').on('click', '#cancel-error', () => {
     store.setError(null);
-    renderError();
+    render();
   });
 };
 
@@ -109,7 +109,8 @@ const handleNewBookmarkView = function () { //grader doesnt like "Updating the D
   // New bookmark page button
   $('main').on('click', '#new', event => {
     event.preventDefault();
-    $('main').html(generateNewBookmarkView());
+    store.view = 'new';
+    render();
   });
 };
 
@@ -117,6 +118,7 @@ const cancelNewBookmarkView = function () {
   //return to default view here
   $('main').on('click', '#cancel', event => {
     event.preventDefault();
+    store.view = 'default';
     render();
   });
 };
@@ -130,12 +132,13 @@ const handleNewBookmarkSubmit = function () {
       .then((newBookmark) => {
         store.addBookmark(newBookmark);
         console.log("hello")
+        store.view = 'default';
         render();
       })
       .catch((error) => {
         console.log("something diff")
         store.setError(error.message); //grader doesnt like "Updating store and then rendering each time is expected and some event handlers do not do this."
-        renderError();
+        render();
       });
 
   });
@@ -154,7 +157,7 @@ const handleFilterView = function () {
     
     if(filter === 0)
     {filterView = bookmarks;}
-    else{filterView = bookmarks.filter(bookmark => bookmark.rating === filter);}
+    else{filterView = bookmarks.filter(bookmark => bookmark.rating >= filter);}
           
     console.log(filterView);
     filteredView(filterView);
@@ -168,12 +171,13 @@ const handleDeletedBookmarkClick = function () {
     const id = getBookmarkIdFromElement(event.currentTarget);
     api.deleteBookmark(id).then(() => {
       store.findAndDelete(id);
-      defaultView();
+      store.view = 'default';
+      render();
     }).catch((error) => {
       console.log(error);
       store.setError(error.message);
       alert(error.message);
-      renderError();
+      render();
     });
   });
 };
@@ -233,8 +237,17 @@ const generateRatingStars = function (bookmark) {
 //Main render function
 const render = function () {
   renderError();
-  defaultView();
+
+  if ( store.view === 'new' ){
+    newBookbarkView();
+  } else {
+    defaultView();
+  }
 };
+
+const newBookbarkView = function () {
+  $('main').html(generateNewBookmarkView());
+}
 
 //Default view
 const defaultView = function () {

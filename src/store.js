@@ -1,6 +1,9 @@
 'use strict';
 /* global */
 
+  // default or new
+  let view = 'default';
+
   const setError = function(error) {
     this.error = error;
   };
@@ -27,7 +30,7 @@
   export default {
     bookmarks,
     minimumRating: 0,
-
+    view,
     setError,
     addBookmark,
     findById,
